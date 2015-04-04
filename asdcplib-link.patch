@@ -1,0 +1,88 @@
+--- asdcplib-1.12.60/m4/ax_lib_expat.m4.orig	2009-11-07 01:11:58.000000000 +0100
++++ asdcplib-1.12.60/m4/ax_lib_expat.m4	2015-04-04 17:34:57.122615887 +0200
+@@ -101,6 +101,7 @@
+ 
+     EXPAT_CFLAGS=""
+     EXPAT_LDFLAGS=""
++    EXPAT_LIBS=""
+     EXPAT_VERSION=""
+ 
+     dnl
+@@ -110,7 +111,6 @@
+ 
+     if test -n "$expat_prefix"; then
+         expat_include_dir="$expat_prefix/include"
+-        expat_lib_flags="-L$expat_prefix/lib64 -L$expat_prefix/lib -lexpat"
+         run_expat_test="yes"
+     elif test "$expat_requested" = "yes"; then
+         if test -n "$expat_include_dir" -a -n "$expat_lib_flags"; then
+@@ -131,6 +131,9 @@
+         saved_LDFLAGS="$LDFLAGS"
+         LDFLAGS="$LDFLAGS $expat_lib_flags"
+ 
++        saved_LIBS="$LIBS"
++        LIBS="$LIBS -lexpat"
++
+         dnl
+         dnl Check Expat headers
+         dnl
+@@ -177,6 +180,7 @@
+                 )],
+                 [
+                 EXPAT_LDFLAGS="$expat_lib_flags"
++                EXPAT_LIBS="-lexpat"
+                 expat_lib_found="yes"
+                 AC_MSG_RESULT([found])
+                 ],
+@@ -190,6 +194,7 @@
+ 
+         CPPFLAGS="$saved_CPPFLAGS"
+         LDFLAGS="$saved_LDFLAGS"
++        LIBS="$saved_LIBS"
+     fi
+ 
+     AC_MSG_CHECKING([for Expat XML Parser])
+@@ -199,6 +204,7 @@
+ 
+             AC_SUBST([EXPAT_CFLAGS])
+             AC_SUBST([EXPAT_LDFLAGS])
++            AC_SUBST([EXPAT_LIBS])
+ 
+             HAVE_EXPAT="yes"
+         else
+@@ -277,5 +283,6 @@
+     if test "$HAVE_EXPAT" = "yes"; then
+         CPPFLAGS="$CPPFLAGS $EXPAT_CFLAGS -DHAVE_EXPAT=1"
+         LDFLAGS="$LDFLAGS $EXPAT_LDFLAGS"
++        LIBS="$LIBS $EXPAT_LIBS"
+     fi
+ ])
+--- asdcplib-1.12.60/m4/ax_lib_openssl.m4.orig	2009-11-07 01:11:58.000000000 +0100
++++ asdcplib-1.12.60/m4/ax_lib_openssl.m4	2015-04-04 17:46:23.155934920 +0200
+@@ -113,7 +113,7 @@
+ 
+     if test -n "$openssl_prefix"; then
+         openssl_include_dir="$openssl_prefix/include"
+-        openssl_ldflags="-L$openssl_prefix/lib64 -L$openssl_prefix/lib"
++        openssl_ldflags=""
+         run_openssl_test="yes"
+     elif test "$openssl_requested" = "yes"; then
+         if test -n "$openssl_include_dir" -a -n "$openssl_lib_flags"; then
+@@ -237,7 +237,7 @@
+                 if test -f "$openssl_include_dir/openssl/opensslv.h"; then
+ 
+                     OPENSSL_VERSION=`grep OPENSSL_VERSION_TEXT $openssl_include_dir/openssl/opensslv.h \
+-                                    | grep -v fips | grep -v PTEXT | cut -f 2 | tr -d \"`
++                                    | grep -v fips | grep -v PTEXT | sed -e 's/.*"\([^"]*\)"$/\1/'`
+                     AC_SUBST([OPENSSL_VERSION])
+ 
+                     dnl Decompose required version string and calculate numerical representation
+@@ -259,7 +259,7 @@
+                                                \+ $((0xf))`
+ 
+                     dnl Calculate numerical representation of detected version
+-                    openssl_version_number=`expr $(($(grep OPENSSL_VERSION_NUMBER $openssl_include_dir/openssl/opensslv.h | cut -f 2 | tr -d L)))`
++                    openssl_version_number=`expr $(($(grep OPENSSL_VERSION_NUMBER $openssl_include_dir/openssl/opensslv.h | sed -e 's/.*\(0x.*\)L.*/\1/') ))`
+ 
+                     openssl_version_check=`expr $openssl_version_number \>\= $openssl_version_req_number`
+                     if test "$openssl_version_check" = "1"; then
