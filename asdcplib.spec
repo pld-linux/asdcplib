@@ -2,14 +2,16 @@
 Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
-Version:	1.12.60
+Version:	2.5.11
 Release:	1
 License:	BSD
 Group:		Libraries
 # note: download URL shows more recent versions than document at download directory
 #Source0Download: http://www.cinecert.com/asdcplib/download/
 Source0:	http://download.cinecert.com/asdcplib/%{name}-%{version}.tar.gz
-# Source0-md5:	3bb2754744a629813e4db816e081e114
+# Source0-md5:	df550ba6d1c802ce51f5401ad756b590
+# from asdcplib 1.12.60 sources
+Source1:	%{name}.pc.in
 Patch0:		%{name}-link.patch
 URL:		http://www.cinecert.com/asdcplib/
 BuildRequires:	autoconf >= 2.59
@@ -17,7 +19,7 @@ BuildRequires:	automake >= 1:1.9
 BuildRequires:	expat-devel >= 1.95
 BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7
-#BuildRequires:	python-devel >= 2.3
+#BuildRequires:	python-devel >= 1:2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -66,7 +68,9 @@ Statyczne biblioteki ASDCP.
 %{__automake}
 %configure \
 	--with-expat=/usr \
-	--with-openssl=/usr
+	--with-openssl=/usr \
+	--enable-as-02 \
+	--enable-phdr
 #	--with-python is broken (required files missing in tarball)
 
 %{__make}
@@ -76,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT%{_pkgconfigdir}
+sed -e 's,@prefix@,%{_prefix},;s,@exec_prefix@,%{_prefix},;s,@libdir@,%{_libdir},;s,@includedir@,%{_includedir},;s,@PACKAGE_VERSION@,%{version},' %{SOURCE1} >$RPM_BUILD_ROOT%{_pkgconfigdir}/asdcplib.pc
 
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*.la
@@ -89,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc COPYING README
+%attr(755,root,root) %{_bindir}/as-02-unwrap
+%attr(755,root,root) %{_bindir}/as-02-wrap
 %attr(755,root,root) %{_bindir}/asdcp-info
 %attr(755,root,root) %{_bindir}/asdcp-test
 %attr(755,root,root) %{_bindir}/asdcp-unwrap
@@ -102,18 +111,29 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/kmrandgen
 %attr(755,root,root) %{_bindir}/kmuuidgen
 %attr(755,root,root) %{_bindir}/wavesplit
+%attr(755,root,root) %{_bindir}/phdr-unwrap
+%attr(755,root,root) %{_bindir}/phdr-wrap
+%attr(755,root,root) %{_bindir}/pinkwave
+%attr(755,root,root) %{_libdir}/libas02-%{version}.so
 %attr(755,root,root) %{_libdir}/libasdcp-%{version}.so
 %attr(755,root,root) %{_libdir}/libkumu-%{version}.so
+%attr(755,root,root) %{_libdir}/libphdr-%{version}.so
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libas02.so
 %attr(755,root,root) %{_libdir}/libasdcp.so
 %attr(755,root,root) %{_libdir}/libkumu.so
+%attr(755,root,root) %{_libdir}/libphdr.so
+%{_includedir}/AS_02.h
+%{_includedir}/AS_02_PHDR.h
 %{_includedir}/AS_DCP.h
 %{_includedir}/KM_*.h
 %{_pkgconfigdir}/asdcplib.pc
 
 %files static
 %defattr(644,root,root,755)
+%{_libdir}/libas02.a
 %{_libdir}/libasdcp.a
 %{_libdir}/libkumu.a
+%{_libdir}/libphdr.a
