@@ -2,14 +2,14 @@
 Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
-Version:	2.5.11
+Version:	2.7.19
 Release:	1
 License:	BSD
 Group:		Libraries
 # note: download URL shows more recent versions than document at download directory
 #Source0Download: http://www.cinecert.com/asdcplib/download/
 Source0:	http://download.cinecert.com/asdcplib/%{name}-%{version}.tar.gz
-# Source0-md5:	df550ba6d1c802ce51f5401ad756b590
+# Source0-md5:	f9290440d1645cc834cfb9fb5a337348
 # from asdcplib 1.12.60 sources
 Source1:	%{name}.pc.in
 Patch0:		%{name}-link.patch
@@ -96,6 +96,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc COPYING README
+%attr(755,root,root) %{_bindir}/as-02-info
 %attr(755,root,root) %{_bindir}/as-02-unwrap
 %attr(755,root,root) %{_bindir}/as-02-wrap
 %attr(755,root,root) %{_bindir}/asdcp-info
