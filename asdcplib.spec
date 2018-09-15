@@ -3,7 +3,7 @@ Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
 Version:	2.7.19
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 # note: download URL shows more recent versions than document at download directory
