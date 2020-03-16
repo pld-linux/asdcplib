@@ -1,15 +1,15 @@
-# TODO: python (missing sources, specified as nodist???)
 Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
-Version:	2.9.30
+Version:	2.10.37
+%define	git_tag	rel_%(echo %{version} | tr . _)
 Release:	1
 License:	BSD
 Group:		Libraries
 # note: download URL shows more recent versions than document at download directory
-#Source0Download: http://www.cinecert.com/asdcplib/download/
-Source0:	http://download.cinecert.com/asdcplib/%{name}-%{version}.tar.gz
-# Source0-md5:	f60d2731b2e263fea4b200d6e00d33bc
+#Source0Download: https://github.com/cinecert/asdcplib/releases
+Source0:	https://github.com/cinecert/asdcplib/archive/%{git_tag}/%{name}-%{git_tag}.tar.gz
+# Source0-md5:	e1b93b7625c62c76d9b896a3f98855ed
 # from asdcplib 1.12.60 sources
 Source1:	%{name}.pc.in
 Patch0:		%{name}-link.patch
@@ -19,7 +19,6 @@ BuildRequires:	automake >= 1:1.9
 BuildRequires:	expat-devel >= 1.95
 BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7
-#BuildRequires:	python-devel >= 1:2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -58,7 +57,7 @@ Static ASDCP libraries.
 Statyczne biblioteki ASDCP.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{git_tag}
 %patch0 -p1
 
 %build
@@ -71,7 +70,6 @@ Statyczne biblioteki ASDCP.
 	--with-openssl=/usr \
 	--enable-as-02 \
 	--enable-phdr
-#	--with-python is broken (required files missing in tarball)
 
 %{__make}
 
@@ -95,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING README
+%doc COPYING README.md
 %attr(755,root,root) %{_bindir}/as-02-info
 %attr(755,root,root) %{_bindir}/as-02-unwrap
 %attr(755,root,root) %{_bindir}/as-02-wrap
