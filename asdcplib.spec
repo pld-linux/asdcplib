@@ -1,7 +1,7 @@
 Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
-Version:	2.10.37
+Version:	2.10.38
 %define	git_tag	rel_%(echo %{version} | tr . _)
 Release:	1
 License:	BSD
@@ -9,7 +9,7 @@ Group:		Libraries
 # note: download URL shows more recent versions than document at download directory
 #Source0Download: https://github.com/cinecert/asdcplib/releases
 Source0:	https://github.com/cinecert/asdcplib/archive/%{git_tag}/%{name}-%{git_tag}.tar.gz
-# Source0-md5:	e1b93b7625c62c76d9b896a3f98855ed
+# Source0-md5:	1588d0dd15e50736dc8b5be3099d372f
 # from asdcplib 1.12.60 sources
 Source1:	%{name}.pc.in
 Patch0:		%{name}-link.patch

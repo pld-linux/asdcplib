@@ -68,21 +68,3 @@
          run_openssl_test="yes"
      elif test "$openssl_requested" = "yes"; then
          if test -n "$openssl_include_dir" -a -n "$openssl_lib_flags"; then
-@@ -237,7 +237,7 @@
-                 if test -f "$openssl_include_dir/openssl/opensslv.h"; then
- 
-                     OPENSSL_VERSION=`grep OPENSSL_VERSION_TEXT $openssl_include_dir/openssl/opensslv.h \
--                                    | grep -v fips | grep -v PTEXT | cut -f 2 | tr -d \"`
-+                                    | grep -v fips | grep -v PTEXT | sed -e 's/.*"\([^"]*\)"$/\1/'`
-                     AC_SUBST([OPENSSL_VERSION])
- 
-                     dnl Decompose required version string and calculate numerical representation
-@@ -259,7 +259,7 @@
-                                                \+ $((0xf))`
- 
-                     dnl Calculate numerical representation of detected version
--                    openssl_version_number=`expr $(($(grep OPENSSL_VERSION_NUMBER $openssl_include_dir/openssl/opensslv.h | cut -f 2 | tr -d L)))`
-+                    openssl_version_number=`expr $(($(grep OPENSSL_VERSION_NUMBER $openssl_include_dir/openssl/opensslv.h | sed -e 's/.*\(0x.*\)L.*/\1/') ))`
- 
-                     openssl_version_check=`expr $openssl_version_number \>\= $openssl_version_req_number`
-                     if test "$openssl_version_check" = "1"; then
