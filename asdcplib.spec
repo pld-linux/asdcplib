@@ -1,15 +1,14 @@
 Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
-Version:	2.10.38
+Version:	2.12.3
 %define	git_tag	rel_%(echo %{version} | tr . _)
-Release:	2
+Release:	1
 License:	BSD
 Group:		Libraries
-# note: download URL shows more recent versions than document at download directory
-#Source0Download: https://github.com/cinecert/asdcplib/releases
+#Source0Download: https://github.com/cinecert/asdcplib/tags
 Source0:	https://github.com/cinecert/asdcplib/archive/%{git_tag}/%{name}-%{git_tag}.tar.gz
-# Source0-md5:	1588d0dd15e50736dc8b5be3099d372f
+# Source0-md5:	016d29b8acf54b92297444bac3106d10
 # from asdcplib 1.12.60 sources
 Source1:	%{name}.pc.in
 Patch0:		%{name}-link.patch
@@ -97,6 +96,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/as-02-info
 %attr(755,root,root) %{_bindir}/as-02-unwrap
 %attr(755,root,root) %{_bindir}/as-02-wrap
+%attr(755,root,root) %{_bindir}/as-02-wrap-iab
+%attr(755,root,root) %{_bindir}/as-02-wrap-jxs
 %attr(755,root,root) %{_bindir}/asdcp-info
 %attr(755,root,root) %{_bindir}/asdcp-test
 %attr(755,root,root) %{_bindir}/asdcp-unwrap
@@ -125,8 +126,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libkumu.so
 %attr(755,root,root) %{_libdir}/libphdr.so
 %{_includedir}/AS_02.h
+%{_includedir}/AS_02_ACES.h
+%{_includedir}/AS_02_IAB.h
+%{_includedir}/AS_02_JXS.h
 %{_includedir}/AS_02_PHDR.h
 %{_includedir}/AS_DCP.h
+%{_includedir}/AS_DCP_JXS.h
 %{_includedir}/KM_*.h
 %{_pkgconfigdir}/asdcplib.pc
 
