@@ -57,7 +57,7 @@ Statyczne biblioteki ASDCP.
 
 %prep
 %setup -q -n %{name}-%{git_tag}
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 %{__libtoolize}
