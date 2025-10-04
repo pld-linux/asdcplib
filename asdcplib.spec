@@ -1,14 +1,14 @@
 Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
-Version:	2.13.0
+Version:	2.13.1
 %define	git_tag	rel_%(echo %{version} | tr . _)
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/cinecert/asdcplib/tags
 Source0:	https://github.com/cinecert/asdcplib/archive/%{git_tag}/%{name}-%{git_tag}.tar.gz
-# Source0-md5:	a7287ace6dbec14cd53cba9a5a06aca7
+# Source0-md5:	64085d8901790de7182b540cd215816d
 # from asdcplib 1.12.60 sources
 Source1:	%{name}.pc.in
 Patch0:		%{name}-link.patch
@@ -16,8 +16,10 @@ URL:		http://www.cinecert.com/asdcplib/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake >= 1:1.9
 BuildRequires:	expat-devel >= 1.95
+BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	openssl-devel >= 0.9.7
+BuildRequires:	xerces-c-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -81,6 +83,9 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_pkgconfigdir}
 sed -e 's,@prefix@,%{_prefix},;s,@exec_prefix@,%{_prefix},;s,@libdir@,%{_libdir},;s,@includedir@,%{_includedir},;s,@PACKAGE_VERSION@,%{version},' %{SOURCE1} >$RPM_BUILD_ROOT%{_pkgconfigdir}/asdcplib.pc
 
+# Metadata.h used by AS_*.h, but not installed; the rest pulled by Metadata.h includes
+cp -p src/KLV.h src/MDD.h src/MXF.h src/MXFTypes.h src/Metadata.h $RPM_BUILD_ROOT%{_includedir}
+
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/lib*.la
 
@@ -121,10 +126,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libas02.so
-%attr(755,root,root) %{_libdir}/libasdcp.so
-%attr(755,root,root) %{_libdir}/libkumu.so
-%attr(755,root,root) %{_libdir}/libphdr.so
+%{_libdir}/libas02.so
+%{_libdir}/libasdcp.so
+%{_libdir}/libkumu.so
+%{_libdir}/libphdr.so
 %{_includedir}/AS_02.h
 %{_includedir}/AS_02_ACES.h
 %{_includedir}/AS_02_IAB.h
@@ -132,7 +137,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/AS_02_PHDR.h
 %{_includedir}/AS_DCP.h
 %{_includedir}/AS_DCP_JXS.h
+%{_includedir}/KLV.h
 %{_includedir}/KM_*.h
+%{_includedir}/MDD.h
+%{_includedir}/MXF.h
+%{_includedir}/MXFTypes.h
+%{_includedir}/Metadata.h
 %{_pkgconfigdir}/asdcplib.pc
 
 %files static

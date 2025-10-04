@@ -1,62 +1,14 @@
---- asdcplib-1.12.60/m4/ax_lib_expat.m4.orig	2009-11-07 01:11:58.000000000 +0100
-+++ asdcplib-1.12.60/m4/ax_lib_expat.m4	2015-04-04 17:34:57.122615887 +0200
-@@ -101,6 +101,7 @@
- 
-     EXPAT_CFLAGS=""
-     EXPAT_LDFLAGS=""
-+    EXPAT_LIBS=""
-     EXPAT_VERSION=""
- 
-     dnl
-@@ -110,7 +111,6 @@
+--- asdcplib-rel_2_13_1/m4/ax_lib_expat.m4.orig	2025-07-11 01:17:19.000000000 +0200
++++ asdcplib-rel_2_13_1/m4/ax_lib_expat.m4	2025-10-04 08:45:42.900626504 +0200
+@@ -109,7 +109,7 @@ AC_DEFUN([AX_LIB_EXPAT],
  
      if test -n "$expat_prefix"; then
          expat_include_dir="$expat_prefix/include"
--        expat_lib_flags="-L$expat_prefix/lib64 -L$expat_prefix/lib -lexpat"
+-        expat_ld_flags="-L$expat_prefix/lib"
++        expat_ld_flags=""
+         expat_lib_flags="-lexpat"
          run_expat_test="yes"
      elif test "$expat_requested" = "yes"; then
-         if test -n "$expat_include_dir" -a -n "$expat_lib_flags"; then
-@@ -131,6 +131,9 @@
-         saved_LDFLAGS="$LDFLAGS"
-         LDFLAGS="$LDFLAGS $expat_lib_flags"
- 
-+        saved_LIBS="$LIBS"
-+        LIBS="$LIBS -lexpat"
-+
-         dnl
-         dnl Check Expat headers
-         dnl
-@@ -177,6 +180,7 @@
-                 )],
-                 [
-                 EXPAT_LDFLAGS="$expat_lib_flags"
-+                EXPAT_LIBS="-lexpat"
-                 expat_lib_found="yes"
-                 AC_MSG_RESULT([found])
-                 ],
-@@ -190,6 +194,7 @@
- 
-         CPPFLAGS="$saved_CPPFLAGS"
-         LDFLAGS="$saved_LDFLAGS"
-+        LIBS="$saved_LIBS"
-     fi
- 
-     AC_MSG_CHECKING([for Expat XML Parser])
-@@ -199,6 +204,7 @@
- 
-             AC_SUBST([EXPAT_CFLAGS])
-             AC_SUBST([EXPAT_LDFLAGS])
-+            AC_SUBST([EXPAT_LIBS])
- 
-             HAVE_EXPAT="yes"
-         else
-@@ -277,5 +283,6 @@
-     if test "$HAVE_EXPAT" = "yes"; then
-         CPPFLAGS="$CPPFLAGS $EXPAT_CFLAGS -DHAVE_EXPAT=1"
-         LDFLAGS="$LDFLAGS $EXPAT_LDFLAGS"
-+        LIBS="$LIBS $EXPAT_LIBS"
-     fi
- ])
 --- asdcplib-1.12.60/m4/ax_lib_openssl.m4.orig	2009-11-07 01:11:58.000000000 +0100
 +++ asdcplib-1.12.60/m4/ax_lib_openssl.m4	2015-04-04 17:46:23.155934920 +0200
 @@ -113,7 +113,7 @@
@@ -68,3 +20,14 @@
          run_openssl_test="yes"
      elif test "$openssl_requested" = "yes"; then
          if test -n "$openssl_include_dir" -a -n "$openssl_lib_flags"; then
+--- asdcplib-rel_2_13_1/m4/ax_lib_xerces.m4.orig	2025-07-11 01:17:19.000000000 +0200
++++ asdcplib-rel_2_13_1/m4/ax_lib_xerces.m4	2025-10-04 09:07:43.283473376 +0200
+@@ -110,7 +110,7 @@ AC_DEFUN([AX_LIB_XERCES],
+     if test -n "$xerces_prefix"; then
+         xerces_include_dir="$xerces_prefix/include"
+         xerces_include_dir2="$xerces_prefix/include/xercesc"
+-        xerces_ldflags="-L$xerces_prefix/lib"
++        xerces_ldflags=""
+         run_xerces_test="yes"
+     elif test "$xerces_requested" = "yes"; then
+         if test -n "$xerces_include_dir" -a -n "$xerces_lib_flags"; then
