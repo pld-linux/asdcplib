@@ -1,14 +1,14 @@
 Summary:	The ASDCP library
 Summary(pl.UTF-8):	Biblioteka ASDCP
 Name:		asdcplib
-Version:	2.13.1
+Version:	2.13.2
 %define	git_tag	rel_%(echo %{version} | tr . _)
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/cinecert/asdcplib/tags
 Source0:	https://github.com/cinecert/asdcplib/archive/%{git_tag}/%{name}-%{git_tag}.tar.gz
-# Source0-md5:	64085d8901790de7182b540cd215816d
+# Source0-md5:	025f04327c5c689545e5b617cabdf6e5
 # from asdcplib 1.12.60 sources
 Source1:	%{name}.pc.in
 Patch0:		%{name}-link.patch
@@ -119,10 +119,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/phdr-unwrap
 %attr(755,root,root) %{_bindir}/phdr-wrap
 %attr(755,root,root) %{_bindir}/pinkwave
-%attr(755,root,root) %{_libdir}/libas02-%{version}.so
-%attr(755,root,root) %{_libdir}/libasdcp-%{version}.so
-%attr(755,root,root) %{_libdir}/libkumu-%{version}.so
-%attr(755,root,root) %{_libdir}/libphdr-%{version}.so
+%{_libdir}/libas02-%{version}.so
+%{_libdir}/libasdcp-%{version}.so
+%{_libdir}/libkumu-%{version}.so
+%{_libdir}/libphdr-%{version}.so
 
 %files devel
 %defattr(644,root,root,755)
